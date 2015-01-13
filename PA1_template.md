@@ -1,15 +1,11 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 ## Loading and preprocessing the data
 
 The following code loads and preprocesses the data:-
 
-```{r}
+
+```r
 # Create data folder if none exists, and extract activity data
 if (!file.exists("./data"))
   dir.create("data")
@@ -45,19 +41,34 @@ To complete this task:-
 - To aid understanding, histogram plotted;
 - Mean (an median) calculated.
 
-```{r plot1, fig.height=5}
+
+```r
 # Calculate steps per day, and show histogram
 steps_day <- tapply(activity$steps, as.factor(activity$date), sum, na.rm=TRUE)
 hist(steps_day, main=("Histogram of Steps/Day"), xlab="No. of steps/day")
 ```
 
+![](./PA1_template_files/figure-html/plot1-1.png) 
+
 
 Mean and Median total number of steps taken per day:-
-```{r}
+
+```r
 # Mean
 mean(steps_day)
+```
+
+```
+## [1] 9354.23
+```
+
+```r
 # Median
 median(steps_day)
+```
+
+```
+## [1] 10395
 ```
 
 
@@ -65,7 +76,8 @@ median(steps_day)
 
 Time series plot of the 5-minute intervals (x-axis) and the average number of
 steps taken, averaged across all days (y-axis).
-```{r plot2, fig.height=5}
+
+```r
 # Extract all unique time interval values
 intervals <- unique(activity$interval)
 
@@ -87,13 +99,20 @@ with(meanIntervals, plot(interval, mean_steps, type="l",
      ylab="Average no. Steps"))
 ```
 
+![](./PA1_template_files/figure-html/plot2-1.png) 
+
 Which 5-minute interval, on average across all the days in the dataset, contains
 the maximum number of steps?
-```{r}
+
+```r
 # Max index location, and resultant max
 max_ind <- with(meanIntervals,
                 which(mean_steps == max(mean_steps)))
 meanIntervals$interval[max_ind]
+```
+
+```
+## [1] 835
 ```
 **Note a value of "835" signifies 8:35am**
 
@@ -103,10 +122,15 @@ meanIntervals$interval[max_ind]
 #### 1. Total number of missing values in the dataset (number of rows)
 Variables
 - "na_rows" - a logical variable; True if row includes an NA.
-```{r}
+
+```r
 # Total number of rows with NAs
 na_rows <- !complete.cases(activity)
 length(which(na_rows == TRUE))
+```
+
+```
+## [1] 2304
 ```
 
 #### 2. Strategy to deal with NAs.
@@ -115,9 +139,17 @@ particular interval.
 
 #### 3. Create a new activity dataset and impute missing values.
 
-```{r}
+
+```r
 # Copy activity dataframe and insert imputed values
 class(activity)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
 activity_processed <- activity
 for (i in 1:nrow(activity)){
     if (na_rows[i] == TRUE){
@@ -130,7 +162,8 @@ rm(index, interval_value)
 ```
 
 #### 4. Histogram
-```{r plot3, fig.height=5}
+
+```r
 # Calculate revised steps per day, and resulting histogram
 steps_day_processed <- tapply(activity_processed$steps,
                               as.factor(activity_processed$date),
@@ -140,13 +173,27 @@ hist(steps_day_processed,
      xlab="No. of steps/day")
 ```
 
+![](./PA1_template_files/figure-html/plot3-1.png) 
+
 
 Mean and Median total number of steps taken per day:-
-```{r}
+
+```r
 # Mean
 mean(steps_day_processed)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 # Median
 median(steps_day_processed)
+```
+
+```
+## [1] 10766.19
 ```
 
 Do these values differ from the estimates from the first part of the assignment? 
