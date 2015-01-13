@@ -176,7 +176,7 @@ mean(steps_day_processed)</code></pre>
 median(steps_day_processed)</code></pre>
 <pre><code>## [1] 10766.19</code></pre>
 <p>Do these values differ from the estimates from the first part of the assignment? <em>- Yes they do.</em></p>
-<p>What is the impact of imputing missing data on the estimates of the total daily number of steps? <em>- The mean and median figures have been increased. It is noted tha the mean</em> <em>and median are the same which indicates that the data is evenly distributed</em> <em>about the mean</em></p>
+<p>What is the impact of imputing missing data on the estimates of the total daily number of steps? <em>- The mean and median figures have been increased. It is noted that the mean</em> <em>and median are the same which indicates that the data is evenly distributed</em> <em>about the mean</em></p>
 </div>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
@@ -220,7 +220,7 @@ meanIntervalsDays &lt;- data.frame(intervals, ave_weekday, ave_weekend)
 names(meanIntervalsDays) &lt;- c(&quot;interval&quot;, &quot;weekday&quot;, &quot;weekend&quot;)
 rm(ave_weekend, ave_weekday)
 
-# Reshapd df for use with lattice plotting package.
+# Reshaped df for use with lattice plotting package.
 library(reshape)
 dataPlot &lt;- melt(meanIntervalsDays, id=&quot;interval&quot;)
 

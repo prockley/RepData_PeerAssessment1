@@ -201,7 +201,7 @@ Do these values differ from the estimates from the first part of the assignment?
 
 What is the impact of imputing missing data on the estimates of the total daily
 number of steps?
-*- The mean and median figures have been increased. It is noted tha the mean*
+*- The mean and median figures have been increased. It is noted that the mean*
 *and median are the same which indicates that the data is evenly distributed*
 *about the mean*
 
@@ -253,7 +253,7 @@ meanIntervalsDays <- data.frame(intervals, ave_weekday, ave_weekend)
 names(meanIntervalsDays) <- c("interval", "weekday", "weekend")
 rm(ave_weekend, ave_weekday)
 
-# Reshapd df for use with lattice plotting package.
+# Reshaped df for use with lattice plotting package.
 library(reshape)
 dataPlot <- melt(meanIntervalsDays, id="interval")
 
