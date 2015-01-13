@@ -43,7 +43,7 @@ To complete this task:-
 
 - Step data grouped by day, and summed (NAs ignored);
 - To aid understanding, histogram plotted;
-- Mean (an median) calculated.
+- Mean and median calculated.
 
 ```{r plot1, fig.height=5}
 # Calculate steps per day, and show histogram
@@ -111,7 +111,7 @@ length(which(na_rows == TRUE))
 
 #### 2. Strategy to deal with NAs.
 **Strategy Chosen:** If value found to be NA, replace with average for that
-particular interval.
+particular 5-minute interval.
 
 #### 3. Create a new activity dataset and impute missing values.
 
@@ -160,3 +160,62 @@ number of steps?
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+#### 1. Create a new factor variable
+The new variable has two levels – “weekday” and “weekend” indicating whether a
+given date is a weekday or weekend day.
+```{r}
+# Create vector of weekday/weekend and add column to data.frame
+weekday <- character(length=nrow(activity_processed))
+for (i in 1:nrow(activity_processed)){
+    if (weekdays(activity_processed$date[i]) %in% c('Saturday','Sunday')){
+        weekday[i] <- "weekend"
+    }
+    else{
+        weekday[i] <- "weekday"
+    }
+}
+weekday <- as.factor(weekday)
+activity_processed$weekday <- weekday
+rm(weekday) # Clear memory
+```
+
+#### 2. Make a panel plot
+The plot contains a time series plot (i.e. type = "l") of the
+5-minute interval (x-axis) and the average number of steps taken, averaged
+across all weekday days or weekend days (y-axis).
+```{r plot4, fig.height=6}
+# Need to subset activity_processed based on weekday factor
+activity_weekday <- activity_processed[activity_processed$weekday == "weekday", 1:3]
+activity_weekend <- activity_processed[activity_processed$weekday == "weekend", 1:3]
+
+# Create vector of all interval averages for both weekends and weekdays
+ave_weekend <- numeric(length(intervals))
+ave_weekday <- numeric(length(intervals))
+for (i in 1:length(intervals)){
+    all_vals_wend <- activity_processed[which(activity_weekend$interval == intervals[i]),][[1]]
+    ave_weekend[i] <- mean(all_vals_wend, na.rm=TRUE)  
+    all_vals_wday <- activity_processed[which(activity_weekday$interval == intervals[i]),][[1]]
+    ave_weekday[i] <- mean(all_vals_wday, na.rm=TRUE)  
+}
+
+# Create df of interval averages, and clear vectors no longer required. 
+meanIntervalsDays <- data.frame(intervals, ave_weekday, ave_weekend)
+names(meanIntervalsDays) <- c("interval", "weekday", "weekend")
+rm(ave_weekend, ave_weekday)
+
+# Reshapd df for use with lattice plotting package.
+library(reshape)
+dataPlot <- melt(meanIntervalsDays, id="interval")
+
+# Plot data using lattice package.
+library(lattice)
+with(dataPlot,
+     xyplot(value ~ interval |
+            variable,
+            layout = c(1,2),
+            type = "l",
+            xlab = "Interval",
+            ylab = "Number of steps")
+)
+```
