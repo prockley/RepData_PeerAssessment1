@@ -1,3 +1,13 @@
+## What is this?
+
+This repo was created for Peer Assessment 1 of the following Coursera course:-
+https://class.coursera.org/repdata-010
+
+Forked from the course tutor RPeng. The rest of this readme contains information
+from the original repo.
+
+---------------------------------------------------------
+
 ## Introduction
 
 It is now possible to collect a large amount of data about personal
